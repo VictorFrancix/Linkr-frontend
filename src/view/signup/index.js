@@ -27,6 +27,7 @@ export function SignUp() {
         const promise = axios.post("http://localhost:4000/signup", registerUser);
         promise.then(() => {
             alert("deu bom!");
+            navigate("/");
         });
         promise.catch((err) => {
             alert('erro')
@@ -98,7 +99,7 @@ export function SignUp() {
 
                 <button type="submit">Cadastrar</button>
             </form>
-            <Link to="/login">Já tem uma conta? Entre agora!</Link>
+            <Link to="/">Já tem uma conta? Entre agora!</Link>
             </>
 }
         </MainStyle>

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import GlobalStyle from "./../../assets/globalStyles/globalStyles.js";
 import { SignUp } from "./../signup/index.js";
+import { Login } from "./../login/index.js";
 
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
             <BrowserRouter>
                 <GlobalStyle />
                     <Routes>
+                        <Route path="/" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />
                     </Routes>
             </BrowserRouter>
