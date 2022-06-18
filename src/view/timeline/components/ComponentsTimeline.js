@@ -50,6 +50,7 @@ export const DivPostsTimeline = styled.div`
 export const WritePostTimeLine = styled.div`
   display: flex;
 
+  margin-bottom: 29px;
   width: 38.1875em;
   height: 13.0625em;
 
@@ -122,19 +123,19 @@ export const InputsFormPost = styled.div`
 `;
 export const LinksPosted = styled.div`
     
-    margin-top: 29px;
-
     position: relative;
 
-    width: 38.1875em;
-    height: 13.0625em;
+    margin-bottom: 16px;
+    width: 611px;
+    height: 276px;
+    box-sizing: border-box;
 
     border-radius: 1em;
     padding: 1.375em;
 
     background: #171717;
 
-    img {
+    .userImg {
         position: absolute;
         top: 17px;
         left: 18px;
@@ -255,5 +256,61 @@ export const Likes = styled.div`
         .message-likes {
             display: flex;
         }  
+    }
+`
+export const Urlmetadata = styled.div`
+    position: absolute;
+    width: 503px;
+    height: 155px;
+    left: 87px;
+    top: 101px;
+    border: 1px solid #4D4D4D;
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    h2 {
+        margin: 24px 0 0 20px;
+        width: 310px;
+        height: 40px;
+        overflow: hidden;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #CECECE;
+    }
+    .text {
+        width: 310px;
+        height: 39px;
+        margin: 5px 0 0 20px;
+        overflow: hidden;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+        color: #9B9595;
+    }
+    .ref {
+        width: 310px;
+        height: 13px;
+        margin: 57px 0 0 20px;
+        overflow: hidden;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+        color: #CECECE;
+    }
+    img {
+        position: absolute;
+        width: 153.44px;
+        height: 155px;
+        right: 0;
+        top: 0;
+        border-radius: 0px 10px 10px 0px;
     }
 `

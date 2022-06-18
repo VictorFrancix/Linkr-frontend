@@ -12,7 +12,8 @@ import {
   LinksPosted,
   ContentLinkPosted,
   Input,
-  Likes
+  Likes,
+  Urlmetadata
 } from "./components/ComponentsTimeline";
 import image from "./components/index.jpeg";
 import { useState } from "react";
@@ -44,7 +45,7 @@ export default function Timeline() {
           </InputsFormPost>
         </WritePostTimeLine>
         <LinksPosted>
-                <img src={image} alt="" />
+                <img className="userImg" src={image} alt="" />
                 <Likes>                    
                     { like ? 
                         <FcLike className="heart-icon" onClick={ () => setLike(!like) } /> : 
@@ -71,8 +72,12 @@ export default function Timeline() {
                             <h2>{value}</h2>
                         }
                     </Input>
-                    {/* <p>urlmetadata</p> */}
-                </ContentLinkPosted>
+                    <Urlmetadata>
+                        <h2>{value}</h2>
+                        <p className="text">{value}</p>
+                        <p className="ref">{"https://medium.com/@pshrmn/a-simple-react-router"}</p>
+                        <img src={image} alt="img"></img>
+                    </Urlmetadata>                </ContentLinkPosted>
             </LinksPosted>
       </DivPostsTimeline>
     </DivMainTimeLine>
