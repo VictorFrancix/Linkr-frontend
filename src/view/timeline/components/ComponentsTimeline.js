@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const DivMainTimeLine = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background: #333333;
   font-family: "Passion One";
   display: flex;
@@ -121,7 +121,7 @@ export const InputsFormPost = styled.div`
     border-radius: 0.3125em;
   }
 `;
-export const LinksPosted = styled.div`
+export const Posteds = styled.div`
     
     position: relative;
 
@@ -309,8 +309,8 @@ export const Urlmetadata = styled.div`
         position: absolute;
         width: 153.44px;
         height: 155px;
-        right: 0;
-        top: 0;
+        right: -1px;
+        top: -1px;
         border-radius: 0px 10px 10px 0px;
     }
 `
