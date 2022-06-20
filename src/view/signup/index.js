@@ -6,7 +6,7 @@ import axios from "axios";
 import "./../../assets/css/fonts.css";
 import UserContext from "./../../assets/contexts/userContext.js";
 
-export default function SignInScreen() {
+export function SignUp() {
   const [user, setUser] = useState({
     email: "",
     password: "",
