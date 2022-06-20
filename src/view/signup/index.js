@@ -1,47 +1,36 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "./../../assets/css/fonts.css";
-import UserContext from "./../../assets/contexts/userContext.js";
+import UserContext from "././../../assets/contexts/userContext";
 
 export function SignUp() {
   const [user, setUser] = useState({
     email: "",
     password: "",
+    username: "",
+    urlpicture: "",
   });
-  const { loading, setLoading, setToken } = useContext(UserContext);
-
-  let tokenObject = localStorage.getItem("tokenUser");
+  const { loading, setLoading } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const URL = "https://linkr-projeto17.herokuapp.com/";
-
-  useEffect(() => {
-    if (tokenObject) {
-      setToken({ ...JSON.parse(tokenObject) });
-      navigate("/timeline");
-    }
-  }, [setToken, navigate, tokenObject]);
 
   function updateUser(event) {
     const { name, value } = event.target;
     setUser((prevState) => ({ ...prevState, [name]: value }));
   }
 
-  function signInUser(event) {
+  function signUpUser(event) {
     event.preventDefault();
     setLoading(true);
-    const promise = axios.post(`${URL}sign-in`, user);
-    promise.then(({ data }) => {
-      const newToken = data.token;
-      tokenObject = JSON.stringify(data);
-      localStorage.setItem("tokenUser", tokenObject);
-      setToken({ token: newToken });
+    const promise = axios.post(`${URL}signup`, user);
+    promise.then((response) => {
+      navigate("/");
       setLoading(false);
-      navigate("/timeline");
     });
     promise.catch((error) => {
       alert(error.response.data);
@@ -50,12 +39,12 @@ export function SignUp() {
   }
 
   return (
-    <SignInScreenContainer>
+    <SignUpScreenContainer>
       <header>
         <h1>linkr</h1>
         <h2>save, share and discover the best links on the web</h2>
       </header>
-      <StyledForm onSubmit={signInUser}>
+      <StyledForm onSubmit={signUpUser}>
         <input
           name="email"
           type="email"
@@ -74,14 +63,32 @@ export function SignUp() {
           onChange={updateUser}
           required
         />
-        <button type="submit">Log In</button>
-        <StyledLink to="/sign-up">First time? Create an account!</StyledLink>
+        <input
+          name="username"
+          type="text"
+          disabled={loading}
+          placeholder="username"
+          value={user.username}
+          onChange={updateUser}
+          required
+        />
+        <input
+          name="picture"
+          type="url"
+          disabled={loading}
+          placeholder="picture url"
+          value={user.urlpicture}
+          onChange={updateUser}
+          required
+        />
+        <button type="submit">Sign Up</button>
+        <StyledLink to="/">Switch back to log in</StyledLink>
       </StyledForm>
-    </SignInScreenContainer>
+    </SignUpScreenContainer>
   );
 }
 
-const SignInScreenContainer = styled.div`
+const SignUpScreenContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #333;

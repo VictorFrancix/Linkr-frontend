@@ -34,7 +34,7 @@ export function Login() {
   function signInUser(event) {
     event.preventDefault();
     setLoading(true);
-    const promise = axios.post(`${URL}sign-in`, user);
+    const promise = axios.post(`${URL}login`, user);
     promise.then(({ data }) => {
       const newToken = data.token;
       tokenObject = JSON.stringify(data);
@@ -75,7 +75,7 @@ export function Login() {
           required
         />
         <button type="submit">Log In</button>
-        <StyledLink to="/sign-up">First time? Create an account!</StyledLink>
+        <StyledLink to="/signup">First time? Create an account!</StyledLink>
       </StyledForm>
     </SignInScreenContainer>
   );
