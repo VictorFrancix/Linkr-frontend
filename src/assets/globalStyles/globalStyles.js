@@ -53,21 +53,51 @@ const GlobalStyles = createGlobalStyle`
     /* Global Styles */
     
     :root {
-        --purple: #c747fc;
-        --orange: #fa9a39;
+        --gray: #333333;
+        --dark-gray: #151515;
+        --white: #ffffff;
+        --bluebutton: #1877F2;
+        --bluebutton-hover: #0792f5;
+        --placeholder: #EFEFEF;
     }
+
     * {
         box-sizing: border-box;
     }
+
     body {
-        font-family: 'Roboto', sans-serif;
-        background-color: var(--orange);
+        font-family: 'Lato', sans-serif;
+        background-color: var(--gray);
     }
+
+    button{
+        cursor: pointer;
+        color: var(--white);
+        background-color: var(--bluebutton);
+    }
+
     button:hover{
         cursor: pointer;
+        background-color: var(--bluebutton-hover);
     }
+
+    button:active{
+        cursor: pointer;
+        background-color: var(--bluebutton-hover);
+    }
+
+    button:disabled{
+        cursor: default;
+        background-color: var(--gray);
+    }
+
     select:hover{
         cursor: pointer;
+    }
+
+    ::placeholder{
+        background-color: var(--placeholder);
+        color: #949494;
     }
 `;
 
