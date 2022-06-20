@@ -7,7 +7,7 @@ export const AuthProvider = (props) => {
 
     return (
         <AuthContext.Provider value={{
-            edit, setEdit 
+            edit, setEdit, 
         }}>
             {props.children}
         </AuthContext.Provider>

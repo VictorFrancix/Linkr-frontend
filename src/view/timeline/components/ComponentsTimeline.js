@@ -13,9 +13,10 @@ export const NavBarTimeLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 
-  width: 100vw;
-  height: 7vh;
+  width: 100%;
+  height: 72px;
 
   background: #151515;
 
@@ -25,6 +26,32 @@ export const NavBarTimeLine = styled.div`
 
   span {
     margin-left: 2vh;
+  }
+  input {     
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+  }
+  .divSearch {
+    background-color: red;
+    position: absolute;
+    width: 563px;
+    height: 45px;
+    left: calc(50% - 281.5px);
+    top: 14px;
+  }
+  .search {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    font-size: 23px;
+    color: #C6C6C6;
+    cursor: pointer;
+  }
+  .userImg {
+    width: 53px;
+    height: 53px;
+    border-radius: 1.625em;
   }
 `;
 

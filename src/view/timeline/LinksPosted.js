@@ -23,7 +23,9 @@ export default function LinksPosted() {
     const [postsLinks, setPostLinks] = useState([]);    
     const [ like, setLike ] = useState([]);
     const userId = 1;
-    const [titulo, setTitulo] = useState('')
+    const [titulo, setTitulo] = useState('');
+
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
     axios.get(`${'http://localhost:4000'}/posts`)
@@ -32,21 +34,60 @@ export default function LinksPosted() {
         setLike(response.data.map((e, i) => e.like === true ? i : ''));
     })
     .catch((err) => {console.log(err)})    
-    },[])
+    },[reload])
+
+    ////////////////////////
+    function deletePost (postId){
+        const header = {'user': sessionStorage.user, 'token': localStorage.token};
+        axios.delete(`${'http://localhost:4000'}/posts`, {}, {headers: header, params: {ID: postId}})
+        .then((response) => {
+            console.log(response)
+            setReload(!reload);
+        })
+        .catch((err) => console.log(err))
+    }
+    function editPost (postId){
+        const header = {'user': sessionStorage.user, 'token': localStorage.token};
+        axios.put(`${'http://localhost:4000'}/posts`, {text: titulo}, {headers: header, params: {ID: postId}})
+        .then((response) => {
+            console.log(response)
+            setReload(!reload);
+        })
+        .catch((err) => console.log(err))
+    }
+    function deleteLike (postId){
+        const header = {'user': sessionStorage.user, 'token': localStorage.token};
+        axios.delete(`${'http://localhost:4000'}/like`, {}, {headers: header, params: {ID: postId}})
+        .then((response) => {
+            console.log(response)
+            setReload(!reload);
+        })
+        .catch((err) => console.log(err))
+    }
+    function postLike (postId){
+        const header = {'user': sessionStorage.user, 'token': localStorage.token};
+        axios.post(`${'http://localhost:4000'}/like`, {}, {headers: header, params: {ID: postId}})
+        .then((response) => {
+            console.log(response)
+            setReload(!reload);
+        })
+    }
+    ////////////////////////
 
     return (
         postsLinks.map((e, i) => {
             const likes = e.numLikes;
             const numLikes = likes < 1000 ? likes : likes < 1000000 ? parseInt(likes / 1000) + ' MIL' : parseInt(likes / 1000000) + ' MI';
             let userLikes = '';
+            like.includes(i) ? userLikes += 'você, ' : userLikes = '';
             e.userLikes.forEach((el, j) => j < e.userLikes.length -1 ? userLikes += el + ', ' : userLikes += el);
             return (
                 <Posteds key={e.interactionCount +i}>
                     <img className="userImg" src={e.image} alt="" />
                     <Likes>                    
                         { like.includes(i) ? 
-                            <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i))} } /> : 
-                            <BiHeart className="heart-icon" onClick={ () => {setLike([...like, i])} } /> 
+                            <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i)); deleteLike()} } /> : 
+                            <BiHeart className="heart-icon" onClick={ () => {setLike([...like, i]); postLike()} } /> 
                         }
                         <p className="p1">{numLikes} Likes</p>
                         <div className="message-likes">
@@ -56,15 +97,26 @@ export default function LinksPosted() {
                     </Likes>
                     <ContentLinkPosted>
                         <p className="name">Juvenal Juvêncio</p>                    
-                        {edit === i && e.userId === userId ? 
+                        {e.userId === userId ? 
                             <>
-                                <FaTrash className="icons" style={ { right: "22px" } }/>
-                                <FaPencilAlt className="icons" style={ { right: "43px" } }/>
+                                <FaTrash className="icons" style={ { right: "22px" } } onClick={() => deletePost()} />
+                                <FaPencilAlt className="icons" 
+                                    style={ { right: "43px" } } 
+                                    onClick={(event) => {
+                                        edit >= 0 ? setEdit(-1) : setEdit(i); 
+                                        setTitulo(e.title); 
+                                        event.stopPropagation()
+                                    }}
+                                />
                             </> : "" 
                         }
-                        <Input onClick={(event) => {setEdit(i); setTitulo(e.title); event.stopPropagation()}}>
+                        <Input>
                             {edit === i && e.userId === userId ? 
-                                <textarea type="text" value={titulo} onChange={(event) => setTitulo(event.target.value)} ></textarea>
+                                <textarea type="text" value={titulo} 
+                                    onChange={(event) => setTitulo(event.target.value)} 
+                                    onClick={(event) => {event.stopPropagation()}}
+                                    onKeyUp={(event) => {if (event.code === "Enter" && !event.shiftKey ) { setEdit(-1); editPost() }}}
+                                ></textarea>
                                 : 
                                 <h2>{e.title}</h2>
                             }
