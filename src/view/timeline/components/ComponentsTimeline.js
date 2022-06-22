@@ -8,6 +8,11 @@ export const DivMainTimeLine = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .desable {
+      opacity: 0.5;
+      cursor: none;
+  }
 `;
 export const NavBarTimeLine = styled.div`
   display: flex;

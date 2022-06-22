@@ -26,9 +26,12 @@ export default function LinksPosted() {
     const [titulo, setTitulo] = useState('');
 
     const [reload, setReload] = useState(false);
+    const [desable, setdesable] = useState([]);
+
+    const token = 142536
 
     useEffect(() => {
-        axios.get(`${'http://localhost:4000'}/post`, { headers: { authorized: 142537 }, params: { page: 0 } })
+        axios.get(`${'http://localhost:4000'}/post/1`, { headers: { authorized: token }, params: { page: 0 } })
         .then((response) => {
             setPostLinks(response.data);
             //setLike(response.data.map((e, i) => e.like === true ? i : ''));
@@ -36,25 +39,31 @@ export default function LinksPosted() {
         .catch((err) => {console.log(err)})    
     },[reload])
 
-    ////////////////////////
+    ////////////////////////         colocar alerts nos erros 
     function deletePost (postId){
-        const header = {'user': sessionStorage.user, 'token': localStorage.token};
-        axios.delete(`${'http://localhost:4000'}/posts`, {}, {headers: header, params: {ID: postId}})
+        axios.delete(`${'http://localhost:4000'}/post/${postId}`, { headers: { authorized: token } })
         .then((response) => {
             console.log(response)
             setReload(!reload);
+            setdesable(like.filter(e => e !== postId+'T'))
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+            console.log(err)
+            setdesable(like.filter(e => e !== postId+'T'))
+        })
     }
     function editPost (postId){
-        const header = {'user': sessionStorage.user, 'token': localStorage.token};
-        axios.put(`${'http://localhost:4000'}/posts`, {text: titulo}, {headers: header, params: {ID: postId}})
+        axios.put(`${'http://localhost:4000'}/post/${postId}`, { title : titulo }, { headers: { authorized: token } })
         .then((response) => {
             console.log(response)
-            setReload(!reload);
+            setReload(!reload); setEdit(-1);
+            setdesable(like.filter(e => e !== postId+'E'));
         })
-        .catch((err) => console.log(err))
-    }
+        .catch((err) => {
+            console.log(err)
+            setdesable(like.filter(e => e !== postId+'E'));
+        })
+    } 
     function deleteLike (postId){
         const header = {'user': sessionStorage.user, 'token': localStorage.token};
         axios.delete(`${'http://localhost:4000'}/like`, {}, {headers: header, params: {ID: postId}})
@@ -93,7 +102,7 @@ export default function LinksPosted() {
                                 <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i)); deleteLike()} } /> : 
                                 <BiHeart className="heart-icon" onClick={ () => {setLike([...like, i]); postLike()} } /> 
                             } */}
-                            <p className="p1">{edit} Likes</p>
+                            <p className="p1">{e.id} Likes</p>
                             {/* <div className="message-likes">
                                 <CgZeit className="zeit-icon"/>
                                 <p className="p2">{'you'} e outras {15 - e.userLikes.length} pessoas</p>    
@@ -103,13 +112,17 @@ export default function LinksPosted() {
                             <p className="name">{e.user_name}</p>                    
                             {e.user_id === userId ? 
                                 <>
-                                    <FaTrash className="icons" style={ { right: "22px" } } onClick={() => deletePost()} />
-                                    <FaPencilAlt className="icons" 
+                                    <FaTrash className={desable.includes(e.id+'T') ? "icons desable" : "icons" } 
+                                        style={ { right: "22px" } }                                         
+                                        onClick={() => {if (!desable.includes(e.id+'T')) deletePost(e.id); setdesable([...desable, e.id+'T'])} } />                                        
+                                    <FaPencilAlt className={desable.includes(e.id+'E') ? "icons desable" : "icons" } 
                                         style={ { right: "43px" } } 
-                                        onClick={(event) => {
-                                            edit >= 0 ? setEdit(-1) : setEdit(i); 
-                                            setTitulo(e.title); 
-                                            event.stopPropagation()
+                                        onClick={(event) => { 
+                                            if (!desable.includes(e.id+'E')) {
+                                                edit >= 0 ? setEdit(-1) : setEdit(i); 
+                                                setTitulo(e.title); 
+                                                event.stopPropagation()
+                                            }
                                         }}
                                     />
                                 </> : "" 
@@ -119,7 +132,7 @@ export default function LinksPosted() {
                                     <textarea type="text" value={titulo} 
                                         onChange={(event) => setTitulo(event.target.value)} 
                                         onClick={(event) => {event.stopPropagation()}}
-                                        onKeyUp={(event) => {if (event.code === "Enter" && !event.shiftKey ) { setEdit(-1); editPost() }}}
+                                        onKeyUp={(event) => {if (event.code === "Enter" && !event.shiftKey ) { setdesable([...desable, e.id+'E']); editPost(e.id) }}}
                                     ></textarea>
                                     : 
                                     <h2>{e.title}</h2>
