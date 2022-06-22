@@ -28,12 +28,12 @@ export default function LinksPosted() {
     const [reload, setReload] = useState(false);
 
     useEffect(() => {
-    axios.get(`${'http://localhost:4000'}/posts`)
-    .then((response) => {
-        setPostLinks(response.data);
-        setLike(response.data.map((e, i) => e.like === true ? i : ''));
-    })
-    .catch((err) => {console.log(err)})    
+        axios.get(`${'http://localhost:4000'}/post`, { headers: { authorized: 142537 }, params: { page: 0 } })
+        .then((response) => {
+            setPostLinks(response.data);
+            //setLike(response.data.map((e, i) => e.like === true ? i : ''));
+        })
+        .catch((err) => {console.log(err)})    
     },[reload])
 
     ////////////////////////
@@ -73,63 +73,68 @@ export default function LinksPosted() {
         })
     }
     ////////////////////////
+    console.log(postsLinks)
 
-    return (
-        postsLinks.map((e, i) => {
-            const likes = e.numLikes;
-            const numLikes = likes < 1000 ? likes : likes < 1000000 ? parseInt(likes / 1000) + ' MIL' : parseInt(likes / 1000000) + ' MI';
-            let userLikes = '';
-            like.includes(i) ? userLikes += 'você, ' : userLikes = '';
-            e.userLikes.forEach((el, j) => j < e.userLikes.length -1 ? userLikes += el + ', ' : userLikes += el);
-            return (
-                <Posteds key={e.interactionCount +i}>
-                    <img className="userImg" src={e.image} alt="" />
-                    <Likes>                    
-                        { like.includes(i) ? 
-                            <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i)); deleteLike()} } /> : 
-                            <BiHeart className="heart-icon" onClick={ () => {setLike([...like, i]); postLike()} } /> 
-                        }
-                        <p className="p1">{numLikes} Likes</p>
-                        <div className="message-likes">
-                            <CgZeit className="zeit-icon"/>
-                            <p className="p2">{userLikes} e outras {likes - e.userLikes.length} pessoas</p>    
-                        </div>
-                    </Likes>
-                    <ContentLinkPosted>
-                        <p className="name">Juvenal Juvêncio</p>                    
-                        {e.userId === userId ? 
-                            <>
-                                <FaTrash className="icons" style={ { right: "22px" } } onClick={() => deletePost()} />
-                                <FaPencilAlt className="icons" 
-                                    style={ { right: "43px" } } 
-                                    onClick={(event) => {
-                                        edit >= 0 ? setEdit(-1) : setEdit(i); 
-                                        setTitulo(e.title); 
-                                        event.stopPropagation()
-                                    }}
-                                />
-                            </> : "" 
-                        }
-                        <Input>
-                            {edit === i && e.userId === userId ? 
-                                <textarea type="text" value={titulo} 
-                                    onChange={(event) => setTitulo(event.target.value)} 
-                                    onClick={(event) => {event.stopPropagation()}}
-                                    onKeyUp={(event) => {if (event.code === "Enter" && !event.shiftKey ) { setEdit(-1); editPost() }}}
-                                ></textarea>
-                                : 
-                                <h2>{e.title}</h2>
+    if ( postsLinks.length ==  0 ){
+        return <></>
+    } else {
+        return (
+            postsLinks.map((e, i) => {
+                //const likes = e.numLikes;
+                //const numLikes = likes < 1000 ? likes : likes < 1000000 ? parseInt(likes / 1000) + ' MIL' : parseInt(likes / 1000000) + ' MI';
+                //let userLikes = '';
+                //like.includes(i) ? userLikes += 'você, ' : userLikes = '';
+                //e.userLikes.forEach((el, j) => j < e.userLikes.length -1 ? userLikes += el + ', ' : userLikes += el);
+                return (
+                    <Posteds key={e.id}>
+                        <img className="userImg" src={e.user_image} alt="" />
+                        <Likes>                    
+                            {/* { like.includes(i) ? 
+                                <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i)); deleteLike()} } /> : 
+                                <BiHeart className="heart-icon" onClick={ () => {setLike([...like, i]); postLike()} } /> 
+                            } */}
+                            <p className="p1">{edit} Likes</p>
+                            {/* <div className="message-likes">
+                                <CgZeit className="zeit-icon"/>
+                                <p className="p2">{'you'} e outras {15 - e.userLikes.length} pessoas</p>    
+                            </div> */}
+                        </Likes>
+                        <ContentLinkPosted>
+                            <p className="name">{e.user_name}</p>                    
+                            {e.user_id === userId ? 
+                                <>
+                                    <FaTrash className="icons" style={ { right: "22px" } } onClick={() => deletePost()} />
+                                    <FaPencilAlt className="icons" 
+                                        style={ { right: "43px" } } 
+                                        onClick={(event) => {
+                                            edit >= 0 ? setEdit(-1) : setEdit(i); 
+                                            setTitulo(e.title); 
+                                            event.stopPropagation()
+                                        }}
+                                    />
+                                </> : "" 
                             }
-                        </Input>
-                        <Urlmetadata>
-                            <h2>{e.title}</h2>
-                            <p className="text">{e.title}</p>
-                            <p className="ref">{"https://medium.com/@pshrmn/a-simple-react-router"}</p>
-                            <img src={e.image} alt="img"></img>
-                        </Urlmetadata>                
-                    </ContentLinkPosted>
-                </Posteds>
-            )
-        })
-    )
+                            <Input>
+                                {edit === i && e.user_id === userId ? 
+                                    <textarea type="text" value={titulo} 
+                                        onChange={(event) => setTitulo(event.target.value)} 
+                                        onClick={(event) => {event.stopPropagation()}}
+                                        onKeyUp={(event) => {if (event.code === "Enter" && !event.shiftKey ) { setEdit(-1); editPost() }}}
+                                    ></textarea>
+                                    : 
+                                    <h2>{e.title}</h2>
+                                }
+                            </Input>
+                            <Urlmetadata>
+                                <h2>{e.subject}</h2>
+                                <p className="text">{e.presentation}</p>
+                                <p className="ref">{e.link}</p>
+                                <img src={e.image} alt="img"></img>
+                            </Urlmetadata>                
+                        </ContentLinkPosted>
+                    </Posteds>
+                )
+            })
+        )
+    }
 }
