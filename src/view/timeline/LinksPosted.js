@@ -105,7 +105,7 @@ export default function LinksPosted() {
                                 <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i)); deleteLike()} } /> : 
                                 <BiHeart className="heart-icon" onClick={ () => {setLike([...like, i]); postLike()} } /> 
                             } */}
-                            <p className="p1">{e.id} Likes</p>
+                            <p className="p1">{e.posts.id} Likes</p>
                             {/* <div className="message-likes">
                                 <CgZeit className="zeit-icon"/>
                                 <p className="p2">{'you'} e outras {15 - e.userLikes.length} pessoas</p>    
