@@ -20,7 +20,7 @@ import axios from "axios";
 export default function LinksPosted() {
     const {  edit, setEdit  } = useContext(AuthContext);
 
-    const [postsLinks, setPostLinks] = useState([]);
+    const [postsLinks, setPostLinks] = useState({posts: [], infos:[]});
     const [page, setPage] = useState([]);
 
     const [ like, setLike ] = useState([]);
@@ -35,7 +35,7 @@ export default function LinksPosted() {
     useEffect(() => {
         axios.get(`${'http://localhost:4000'}/post/1`, { headers: { authorized: token }, params: { page: 0 } })
         .then((response) => {
-            //console.log(postsLinks.includes(...response))
+            console.log(response.data)
             setPostLinks(response.data);
             //setLike(response.data.map((e, i) => e.like === true ? i : ''));
         })
@@ -91,7 +91,7 @@ export default function LinksPosted() {
         return <></>
     } else {
         return (
-            postsLinks.map((e, i) => {
+            postsLinks.posts.map((e, i) => {
                 //const likes = e.numLikes;
                 //const numLikes = likes < 1000 ? likes : likes < 1000000 ? parseInt(likes / 1000) + ' MIL' : parseInt(likes / 1000000) + ' MI';
                 //let userLikes = '';
@@ -105,7 +105,7 @@ export default function LinksPosted() {
                                 <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i)); deleteLike()} } /> : 
                                 <BiHeart className="heart-icon" onClick={ () => {setLike([...like, i]); postLike()} } /> 
                             } */}
-                            <p className="p1">{e.posts.id} Likes</p>
+                            <p className="p1">{e.id} Likes</p>
                             {/* <div className="message-likes">
                                 <CgZeit className="zeit-icon"/>
                                 <p className="p2">{'you'} e outras {15 - e.userLikes.length} pessoas</p>    
