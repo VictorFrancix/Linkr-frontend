@@ -21,6 +21,7 @@ export default function LinksPosted() {
     const {  edit, setEdit  } = useContext(AuthContext);
 
     const [postsLinks, setPostLinks] = useState([]);
+    const [page, setPage] = useState([]);
 
     const [ like, setLike ] = useState([]);
     const userId = 1;
