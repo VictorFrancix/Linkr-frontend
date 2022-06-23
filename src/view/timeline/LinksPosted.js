@@ -20,7 +20,8 @@ import axios from "axios";
 export default function LinksPosted() {
     const {  edit, setEdit  } = useContext(AuthContext);
 
-    const [postsLinks, setPostLinks] = useState([]);    
+    const [postsLinks, setPostLinks] = useState([]);
+
     const [ like, setLike ] = useState([]);
     const userId = 1;
     const [titulo, setTitulo] = useState('');
@@ -33,6 +34,7 @@ export default function LinksPosted() {
     useEffect(() => {
         axios.get(`${'http://localhost:4000'}/post/1`, { headers: { authorized: token }, params: { page: 0 } })
         .then((response) => {
+            //console.log(postsLinks.includes(...response))
             setPostLinks(response.data);
             //setLike(response.data.map((e, i) => e.like === true ? i : ''));
         })
@@ -95,8 +97,8 @@ export default function LinksPosted() {
                 //like.includes(i) ? userLikes += 'você, ' : userLikes = '';
                 //e.userLikes.forEach((el, j) => j < e.userLikes.length -1 ? userLikes += el + ', ' : userLikes += el);
                 return (
-                    <Posteds key={e.id}>
-                        <img className="userImg" src={e.user_image} alt="" />
+                    <Posteds key={i}>
+                        <img className="userImg" src={e.user_image} alt="" onClick={() => setReload(!reload)} />
                         <Likes>                    
                             {/* { like.includes(i) ? 
                                 <FcLike className="heart-icon" onClick={ () => {setLike(like.filter(e => e !== i)); deleteLike()} } /> : 
