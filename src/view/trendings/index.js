@@ -25,18 +25,24 @@ export default function TrendingHashtags() {
         // eslint-disable-next-line
     }, []);
 
-    const URL = "http://localhost:5000/";
+    const URL = "http://localhost:4000/";
 
     async function getTrendingHashtags() {
         try {
 
-            const config = { headers: { Authorization: `Bearer ${JSON.parse(tokenObject).token}` } };
+            const config = { headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` } };
             const response = await axios.get(`${URL}hashtag`, config);
             setTrendingHashtags(response.data);
-
+            console.log(response.data)
         } catch (e) {
             setTrendingHashtags(["error"]);
             console.log(e);
+
+            if(e.response.status === 401) {
+                localStorage.clear();
+                navigate("/");
+                alert("Algo aconteceu de errado")
+            }
         }
     }
 
@@ -59,10 +65,10 @@ export default function TrendingHashtags() {
 
         return (
             trendingHashtags.map(hashtag => {
-                const { name } = hashtag;
+                const { text } = hashtag;
 
                 return (
-                    <p onClick={() => navigate(`/hashtag/${name}`)} key={name} className="hashtag"># {name}</p>
+                    <p onClick={() => navigate(`/hashtag/${text}`)} key={text} className="hashtag"># {text}</p>
                 );
             })
         );
@@ -90,6 +96,7 @@ export default function TrendingHashtags() {
 }
 
 const Div = styled.div`
+    margin-top: 9.22%;
     color: white;
     width: 301px;
     height: 406px;
@@ -122,6 +129,7 @@ const Div = styled.div`
     }
     .hashtag:hover {
         opacity: 0.7;
+        cursor: pointer;
     }
     .trending-message-container {
         height: auto;

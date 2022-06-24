@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 export const DivMainTimeLine = styled.div`
+  margin-top: -4%;
   width: 100vw;
   height: 100%;
   background: #333333;
   font-family: "Passion One";
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: rows;
+  justify-content: center;
 
   .desable {
       opacity: 0.5;
@@ -63,8 +64,8 @@ export const NavBarTimeLine = styled.div`
 `;
 
 export const DivPostsTimeline = styled.div`
+  margin-right: -18.8%;
   width: 60vw;
-
   display: flex;
   align-items: flex-start;
   flex-direction: column;
