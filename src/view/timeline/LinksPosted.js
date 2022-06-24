@@ -26,7 +26,7 @@ import userImage from "./components/user.svg"
 import axios from "axios";
 
 export default function LinksPosted() {
-    const { edit, setEdit, openComment, setOpenComment } = useContext(AuthContext);
+    const {  edit, setEdit, openComment, setOpenComment } = useContext(AuthContext);
 
     const [postsLinks, setPostLinks] = useState({posts: [], infos:[]});
     const [postsComment, setPostsComment] =useState([]);
