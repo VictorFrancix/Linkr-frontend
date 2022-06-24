@@ -12,7 +12,7 @@ import userImage from "./components/user.svg"
 
 
 export default function NavBar() {
-    const { url, setRoute, setReload, reload } = useContext(AuthContext);
+    const { url, setRoute, setReload, reload, setPage, setPostLinks } = useContext(AuthContext);
     const [result, setResult] = useState([]);
     const userId = 1;
 
@@ -30,7 +30,13 @@ export default function NavBar() {
 
     return (
         <NavBarTimeLine search={result.length > 0? true : false}>
-        <span onClick={() => {setRoute('/post'); setReload(!reload)}}>LINKR</span>
+        <span onClick={() => {
+            setRoute('/post'); 
+            setPage(0); 
+            setReload(!reload); 
+            setPostLinks([{posts: [], infos:[]}]);
+            }}
+        >LINKR</span>
         <div className="divSearch">
             <DebounceInput
                 placeholder="Search for people"
@@ -48,7 +54,12 @@ export default function NavBar() {
                 )
             })}
         </div>
-        <img className="userImg" src={image} alt="" onClick={() => {setRoute(`/post/${userId}`); setReload(!reload)}} />
+        <img className="userImg" src={image} alt="" onClick={() => {
+            setRoute(`/post/${userId}`); 
+            setPage(0); setReload(!reload); 
+            setPostLinks([{posts: [], infos:[]}]);
+            }} 
+        />
       </NavBarTimeLine>
     )
 }
