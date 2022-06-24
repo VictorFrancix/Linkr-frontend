@@ -1,110 +1,48 @@
+
 import styled from "styled-components";
 
-export const DivMainTimeLine = styled.div`
-  width: 100vw;
-  height: 100%;
-  background: #333333;
-  font-family: "Passion One";
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+export const ContentPosted = styled.div`
+    height: ${(props) => props.repost};
+    width: 611px;
 
-  .desable {
-      opacity: 0.5;
-      cursor: none;
-  }
-`;
-export const NavBarTimeLine = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    background-color: #1E1E1E;
+    position: relative;
 
-  width: 100%;
-  height: 72px;
+    margin-bottom: ${(props) => props.openComment? '370px' : '16px'};
 
-  background: #151515;
-
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 32px;
-
-  span {
-    margin-left: 2vh;
-    cursor: pointer;
-  }
-  input {     
-    border-radius: 8px;
-    width: 100%;
-    height: 100%;
-  }
-  .divSearch {
-    background-color: red;
-    position: absolute;
-    width: 563px;
-    height: 45px;
-    left: calc(50% - 281.5px);
-    top: 14px;
-  }
-  .search {
-    position: absolute;
-    right: 16px;
-    top: 12px;
-    font-size: 23px;
-    color: #C6C6C6;
-    cursor: pointer;
-  }
-  .userImg {
-    width: 53px;
-    height: 53px;
-    border-radius: 1.625em;
-    cursor: pointer;
-  }
-`;
-
-export const DivPostsTimeline = styled.div`
-  width: 60vw;
-
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-
-  padding: 4.875em 0 0 0;
-
-  h3 {
-    color: #ffffff;
-    font-family: "Oswald";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-  }
-`;
-
-export const WritePostTimeLine = styled.div`
-  display: flex;
-
-  margin-bottom: 29px;
-  width: 38.1875em;
-  height: 13.0625em;
-
-  border-radius: 1em;
-  padding: 1.375em;
-
-  background: #ffff;
-
-  img {
-    width: 3.125em;
-    height: 3.125em;
-    border-radius: 1.625em;
-  }
-`;
+    .reposted_name {
+        position: absolute;
+        top: 10px;
+        left: 39px;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 13px;
+        color: #FFFFFF;
+    }
+    span {
+        font-weight: bold;
+    }
+    .reposted_icon {
+        position: absolute;
+        top: 3px;
+        left: 10px;
+        color: #FFFFFF;
+        font-size: 26px;
+    }
+    .displaynone {
+        display: none;
+    }
+`
 
 export const Posteds = styled.div`
     
-    position: relative;
-
-    margin-bottom: 16px;
+    position: absolute;
+    bottom: 0;
+    
     width: 611px;
     height: 276px;
     box-sizing: border-box;
@@ -113,6 +51,7 @@ export const Posteds = styled.div`
     padding: 1.375em;
 
     background: #171717;
+    z-index: 1;
 
     .userImg {
         position: absolute;
@@ -121,6 +60,7 @@ export const Posteds = styled.div`
         width: 3.125em;
         height: 3.125em;
         border-radius: 1.625em;
+        cursor: pointer;
     }
     .icons {
         position: absolute;
@@ -130,8 +70,97 @@ export const Posteds = styled.div`
         cursor: pointer;  
     }
 `;
-
+export const Comment = styled.div`
+    box-sizing: border-box;
+    padding-top: 25px;
+    width: 611px;
+    height: 350px;
+    border-radius: 16px;
+    background-color: #1E1E1E;
+    position: absolute;
+    bottom: -325px;                         ///////////////
+    display: ${(props) => props.open? 'flex' : 'none'};
+    flex-direction: column;
+    align-items: center;
+    input {
+        box-sizing: border-box;
+        padding-left: 15px;
+        position: absolute;
+        color: #F3F3F3;
+        bottom: 25px;
+        left: 78px;
+        width: 510px;
+        height: 39px;
+        background-color: #252525;
+        border-radius: 8px;
+        border: none;
+        font-family: 'Lato';
+        font-style: italic;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+    }
+    input::placeholder {
+        background-color: #252525;
+        border-radius: 8px;
+        color: #575757;
+    }
+    .send {
+        font-size: 19px;
+        position: absolute;
+        bottom: 36px;
+        right: 38px;
+        color: #F3F3F3;
+        cursor: pointer;
+    }
+    img {
+        position: absolute;
+        width: 39px;
+        height: 39px;
+        border-radius: 1.625em;
+    }
+    .user-img {
+        bottom: 25px;
+        left: 25px;
+    }
+    .comment-img {
+       bottom: 16px;
+       left: 2px;
+    }
+    p {
+        position: absolute;
+        width: 400px;
+        left: 62px;
+    }
+    .comment-name {
+        top: 15px;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 17px;
+        color: #F3F3F3;
+    }
+    .comment-text {
+        top: 35px;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        color: #ACACAC;
+    }
+    div {
+        position: relative;
+        width: 571px;
+        height: 74px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #353535;        
+    }
+    
+`
 export const ContentLinkPosted = styled.div`
+
     p {
         margin: 0;
         position: absolute;
@@ -196,12 +225,13 @@ export const Likes = styled.div`
         height: 24px;
         border-radius: 3px;
         background-color: white;
-        display: none;
         align-items: center;
+        display: flex;
+        z-index: 1;
     }
     .heart-icon {
-        font-size: "20px";
-        color: "white";
+        font-size: 20px;
+        color: #FFFFFF;
         cursor: pointer;
     }
     .zeit-icon {
@@ -211,7 +241,14 @@ export const Likes = styled.div`
         color: white;
         font-size: 28px;
     }
+    .aux-icon {
+        position: absolute;
+        font-size: 20px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
     .p1 {
+        width: 80px;
         font-family: 'Lato';
         font-style: normal;
         font-weight: 400;
@@ -230,11 +267,6 @@ export const Likes = styled.div`
         line-height: 13px;
         color: #505050;
         text-align: center;
-    }
-    &:hover {
-        .message-likes {
-            display: flex;
-        }  
     }
 `
 export const Urlmetadata = styled.div`
