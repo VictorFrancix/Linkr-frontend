@@ -26,7 +26,7 @@ import userImage from "./components/user.svg"
 import axios from "axios";
 
 export default function LinksPosted() {
-    const {  edit, setEdit, openComment, setOpenComment } = useContext(AuthContext);
+    const { url, edit, setEdit, openComment, setOpenComment, route, setRoute, reload, setReload } = useContext(AuthContext);
 
     const [postsLinks, setPostLinks] = useState({posts: [], infos:[]});
     const [postsComment, setPostsComment] =useState([]);
@@ -36,20 +36,16 @@ export default function LinksPosted() {
 
 
     const [ test, setTest ] = useState('white');
-    const userId = 2;
+    const userId = 1;
     const [titulo, setTitulo] = useState('');
 
-    const [reload, setReload] = useState(false);
     const [desable, setdesable] = useState([]);
 
-    const url = 'http://localhost:4000'
-    const token = 142537
-    const [route, setRoute] = useState('/post')
+    const token = 142536
 
     useEffect(() => {
         axios.get(`${url + route}`, { headers: { authorized: token }, params: { page: 0 } })
         .then((response) => {
-            console.log(response.data)
             setPostLinks(response.data);
             //setLike(response.data.map((e, i) => e.like === true ? i : ''));
         })
@@ -95,7 +91,6 @@ export default function LinksPosted() {
     function getLike (postId){
         axios.get(`${url}/like`, {headers: { authorized: token }, params: {post_id: postId}})
         .then((response) => {
-            console.log(response.data)
             setLikes([response.data, postId]);
         })
         .catch((err) => {
@@ -128,6 +123,29 @@ export default function LinksPosted() {
             setdesable(desable.filter(e => e !== post_id+'C'));
         })
     }
+
+    function postRepost (post_id){
+        axios.post(`${url}/repost`, {}, {headers: { authorized: token }, params: {post_id}})
+        .then((response) => {
+            setReload(!reload);
+            setdesable(desable.filter(e => e !== post_id+'R'));
+        })
+        .catch((err) => {
+            console.log(err)
+            setdesable(desable.filter(e => e !== post_id+'R'));
+        })
+    }
+    function deleteRepost (repost_id){
+        axios.delete(`${url}/repost`, {}, {headers: { authorized: token }, params: {repost_id}})
+        .then((response) => {
+            setReload(!reload);
+            setdesable(desable.filter(e => e !== repost_id+'T'));
+        })
+        .catch((err) => {
+            console.log(err)
+            setdesable(desable.filter(e => e !== repost_id+'T'));
+        })
+    }
     ////////////////////////
 
     function calcMi(numTotal) {
@@ -146,30 +164,27 @@ export default function LinksPosted() {
                 const info = postsLinks.infos[i]
                 const youLike = likes[0].likeUser.find(li => li.user != null) 
                 const followLike = likes[0].likeUser.filter(li => li.userFollower != null).map(li => li.userFollower);             
-                // let userLikes = '';
-                // like.includes(i) ? userLikes += 'você, ' : userLikes = '';
-                //e.userLikes.forEach((el, j) => j < e.userLikes.length -1 ? userLikes += el + ', ' : userLikes += el);
                
                 return (
                     <ContentPosted 
-                        repost={e.creat_user !== e.post_user ? '276px' : '309px'} 
+                        repost={e.creat_user === e.post_user ? '276px' : '309px'} 
                         openComment={ openComment === e.id? true : false }
                         key={i} 
                     >
-                        <CgRepeat className="reposted_icon"/><p className="reposted_name">Re-posted by <span>{e.post_user === userId ? 'you' : e.post_userName}</span></p>
+                        <CgRepeat className="reposted_icon"/><p className="reposted_name">Re-posted by <span>{e.post_user === userId ? 'you' : e.creat_userName}</span></p>
                         <Posteds>
                             <img className="userImg" src={e.user_image? e.user_image : userImage} alt="" onClick={() => {setRoute(`/post/${e.post_user}`); setReload(!reload)}} />
                             <Likes>                    
                                 { e.like != null ? 
                                     <FcLike className="heart-icon" 
-                                        onClick={ () => {if ( e.post_user == e.creat_user) 
+                                        onClick={ () => {if ( e.post_user === e.creat_user) 
                                             {setdesable([...desable, e.id+'L']); postLike(e.id)}} 
                                         } 
                                         onMouseEnter={() => {getLike(e.id)}}
                                         onMouseLeave={() => {setLikes([{likeUser: [], numLikes: 0}])}}
                                     /> : 
                                     <BiHeart className="heart-icon" 
-                                        onClick={ () => {if ( e.post_user == e.creat_user) 
+                                        onClick={ () => {if ( e.post_user === e.creat_user) 
                                             {setdesable([...desable, e.id+'L']); postLike(e.id)}} 
                                         }
                                         onMouseEnter={() => {getLike(e.id)}}
@@ -178,7 +193,7 @@ export default function LinksPosted() {
                                 }
                                 <p className="p1">{calcMi(info.numLikes)} Likes</p>
 
-                                <div className={info.numLikes > 0 && likes[1] == e.id ? "message-likes" : "displaynone"} >
+                                <div className={info.numLikes > 0 && likes[1] === e.id ? "message-likes" : "displaynone"} >
                                     <CgZeit className="zeit-icon"/>
                                     <p className="p2">{youLike ? 'your' : ''} {followLike.length > 0 ? followLike.join(', ') : ''} e outras {info.numLikes - likes[0].likeUser.length} pessoas</p>    
                                 </div>
@@ -187,7 +202,7 @@ export default function LinksPosted() {
                                     className={ desable.includes(e.id+'C') ? "aux-icon desable" : "aux-icon" }
                                     style={{top: '56px'}} 
                                     onClick={(event) => {
-                                        if (!desable.includes(e.id+'C')) {
+                                        if (!desable.includes(e.id+'C') && e.post_user === e.creat_user) {
                                             getComment(e.id); 
                                             setdesable([...desable, e.id+'C']);
                                             setComment('');
@@ -198,8 +213,13 @@ export default function LinksPosted() {
 
                                 <p className="aux-icon p1" style={{top: '74px'}}>{calcMi(info.numComments)} Comments</p>
 
-                                <CgRepeat className="aux-icon" style={{top: '100px', color: test}} 
-                                    onClick={() => setRoute('/post')}
+                                <CgRepeat className={ desable.includes(e.id+'R') ? "aux-icon desable" : "aux-icon" }
+                                    style={{top: '100px', color: test}} 
+                                    onClick={() => {
+                                        if (!desable.includes(e.id+'R') && e.post_user === e.creat_user) {
+                                            postRepost(e.id)
+                                        }
+                                    }}
                                 />
                                 <p className="aux-icon p1" style={{top: '116px'}}>{calcMi(info.numRe_posts)} Re-post</p>
 
@@ -212,8 +232,13 @@ export default function LinksPosted() {
                                             style={ { right: "22px" } }                                         
                                             onClick={() => {
                                                 if (!desable.includes(e.id+'T')) {
-                                                    deletePost(e.id);
-                                                    setdesable([...desable, e.id+'T'])
+                                                    if (e.creat_user === e.post_user) {
+                                                        deletePost(e.id);
+                                                        setdesable([...desable, e.id+'T'])
+                                                    } else {
+                                                        deleteRepost(e.id);
+                                                        setdesable([...desable, e.id+'T'])
+                                                    }
                                                 }
                                             }} 
                                         />                                        
@@ -258,9 +283,8 @@ export default function LinksPosted() {
                             onClick={(event) => event.stopPropagation()}
                         >
                             {openComment === e.id? postsComment.map(post => {
-                                    console.log(post)
                                     return (
-                                        <div>
+                                        <div key={post.id}>
                                             <img className="comment-img" src={post.image? post.image : userImage} alt=""></img>
                                             <p className="comment-name">{post.user_name}<span>{post.followers_id? ' • following' : ''}</span></p>
                                             <p className="comment-text">{post.text}</p>
