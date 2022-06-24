@@ -31,6 +31,7 @@ export const NavBarTimeLine = styled.div`
 
   span {
     margin-left: 2vh;
+    cursor: pointer;
   }
   input {     
     border-radius: 8px;
@@ -57,6 +58,7 @@ export const NavBarTimeLine = styled.div`
     width: 53px;
     height: 53px;
     border-radius: 1.625em;
+    cursor: pointer;
   }
 `;
 
@@ -98,61 +100,6 @@ export const WritePostTimeLine = styled.div`
   }
 `;
 
-export const InputsFormPost = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  padding: 0 1.375em;
-  font-family: "Lato";
-
-  input {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 300;
-    font-size: 15px;
-    line-height: 18px;
-
-    color: #949494;
-
-    width: 31.4375em;
-
-    margin: 0.3125em 0 0.3125em 0;
-    padding: 0.3125em 0.75em 0.3125em 0.75em;
-
-    background: #efefef;
-
-    border-radius: 0.3125em;
-    border: none;
-    outline: none;
-  }
-  #text-post {
-    height: 4.125em;
-  }
-  #link {
-    height: 1.875em;
-  }
-  p {
-    font-size: 20px;
-    color: #707070;
-    padding: 0.5em 0;
-  }
-  button {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 17px;
-
-    color: #ffffff;
-
-    width: 7em;
-    height: 1.9375em;
-    border: none;
-    outline: none;
-    background: #1877f2;
-    border-radius: 0.3125em;
-  }
-`;
 export const Posteds = styled.div`
     
     position: relative;
