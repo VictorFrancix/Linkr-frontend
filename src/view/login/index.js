@@ -14,17 +14,18 @@ export function Login() {
   const { loading, setLoading , setToken} = useContext(UserContext);
 
   let tokenObject = localStorage.getItem("tokenUser");
+  let userObject = localStorage.getItem("user");
 
   const navigate = useNavigate();
 
-  const URL = "https://linkr-projeto17.herokuapp.com/";
+  const URL = "http://localhost:4000/";
 
   useEffect(() => {
-    if (tokenObject) {
+    if (tokenObject && userObject) {
       setToken({ ...JSON.parse(tokenObject) });
-      navigate("/timeline");
+      navigate("/home");
     }
-  }, [setToken, navigate, tokenObject]);
+  }, [setToken, navigate, tokenObject, userObject]);
 
   function updateUser(event) {
     const { name, value } = event.target;
@@ -37,14 +38,17 @@ export function Login() {
     const promise = axios.post(`${URL}login`, user);
     promise.then(({ data }) => {
       const newToken = data.token;
-      tokenObject = JSON.stringify(data);
+      userObject = JSON.stringify(data.user)
+      tokenObject = JSON.stringify(data.token);
       localStorage.setItem("tokenUser", tokenObject);
+      localStorage.setItem("user", userObject); 
       setToken({ token: newToken });
       setLoading(false);
-      navigate("/timeline");
+      navigate("/home");
     });
     promise.catch((error) => {
       alert(error.response.data);
+      console.log(error.response.data)
       setLoading(false);
     });
   }
