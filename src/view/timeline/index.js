@@ -10,6 +10,7 @@ import image from "./components/index.jpeg";
 import LinksPosted from "./LinksPosted";
 import { TbSearch } from "react-icons/tb";
 import FormPosted from "./FormPosted";
+import TrendingHashtags from "./../trendings/index.js"
 
 
 export default function Timeline() {
@@ -18,8 +19,8 @@ export default function Timeline() {
   const userId = 1;
 
   return (
-    <DivMainTimeLine onClick={() => {setEdit(-1); setOpenComment('')} }>
-      <NavBarTimeLine>
+    <>
+    <NavBarTimeLine>
         <span onClick={() => {setRoute('/post'); setReload(!reload)}}>LINKR</span>
         <div className="divSearch">
           <input value={search} 
@@ -29,7 +30,8 @@ export default function Timeline() {
             <TbSearch className="search"/>
         </div>
         <img className="userImg" src={image} alt="" onClick={() => {setRoute(`/post/${userId}`); setReload(!reload)}} />
-      </NavBarTimeLine>
+    </NavBarTimeLine>
+    <DivMainTimeLine onClick={() => {setEdit(-1); setOpenComment('')} }>
       <DivPostsTimeline>
         <h3>Timeline</h3>
         <WritePostTimeLine>
@@ -38,6 +40,8 @@ export default function Timeline() {
         </WritePostTimeLine>
         <LinksPosted/>
       </DivPostsTimeline>
+      <TrendingHashtags/>
     </DivMainTimeLine>
+    </>
   );
 }
