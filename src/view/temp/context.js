@@ -8,14 +8,17 @@ export const AuthProvider = (props) => {
     const [ openComment, setOpenComment ] = useState('')
     const [route, setRoute] = useState('/post')
     const [reload, setReload] = useState(false);
-
+    const [page, setPage] = useState(0);
+    const [postsLinks, setPostLinks] = useState([{posts: [], infos:[]}]);
 
     return (
         <AuthContext.Provider value={{
             url, edit, setEdit, 
             openComment, setOpenComment,
             route, setRoute,
-            reload, setReload
+            reload, setReload,
+            page, setPage,
+            postsLinks, setPostLinks
         }}>
             {props.children}
         </AuthContext.Provider>

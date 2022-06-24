@@ -1,17 +1,13 @@
-
 import styled from "styled-components";
 
 export const ContentPosted = styled.div`
     height: ${(props) => props.repost};
     width: 611px;
-
     border-radius: 16px;
     margin-bottom: 16px;
     background-color: #1E1E1E;
     position: relative;
-
     margin-bottom: ${(props) => props.openComment? '370px' : '16px'};
-
     .reposted_name {
         position: absolute;
         top: 10px;
@@ -46,13 +42,10 @@ export const Posteds = styled.div`
     width: 611px;
     height: 276px;
     box-sizing: border-box;
-
     border-radius: 1em;
     padding: 1.375em;
-
     background: #171717;
     z-index: 1;
-
     .userImg {
         position: absolute;
         top: 17px;
@@ -60,7 +53,6 @@ export const Posteds = styled.div`
         width: 3.125em;
         height: 3.125em;
         border-radius: 1.625em;
-        cursor: pointer;
     }
     .icons {
         position: absolute;
@@ -140,6 +132,7 @@ export const Comment = styled.div`
         font-size: 14px;
         line-height: 17px;
         color: #F3F3F3;
+        cursor: pointer;
     }
     .comment-text {
         top: 35px;
@@ -160,7 +153,6 @@ export const Comment = styled.div`
     
 `
 export const ContentLinkPosted = styled.div`
-
     p {
         margin: 0;
         position: absolute;
@@ -176,6 +168,7 @@ export const ContentLinkPosted = styled.div`
         height: 23px;
         left: 86px;
         top: 19px;
+        cursor: pointer;
     }
 `;
 
@@ -277,9 +270,7 @@ export const Urlmetadata = styled.div`
     top: 101px;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
-
     cursor: pointer;
-
     h2 {
         margin: 24px 0 0 20px;
         width: 310px;
@@ -324,4 +315,22 @@ export const Urlmetadata = styled.div`
         top: -1px;
         border-radius: 0px 10px 10px 0px;
     }
+`
+export const NewPosteds = styled.button`
+    width: 611px;
+    height: 61px;
+    background: #1877F2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    border: none;
+    margin-bottom: 17px;
+    display: ${props => props.new? 'unset' : 'none'};
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #FFFFFF;
 `
