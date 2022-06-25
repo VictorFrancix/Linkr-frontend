@@ -49,7 +49,15 @@ export default function NavBar() {
                 return (
                     <div className="results">
                         <img className="searchImg" src={e.image? e.image : userImage} alt=""></img>
-                        <p className="searchName">{e.user_name}<span>{e.followers_id? ' • following' : ''}</span></p>
+                        <p 
+                            className="searchName"
+                            onClick={() => {
+                                setRoute(`/post/${e.id}`); 
+                                setPage(0); 
+                                setReload(!reload); 
+                                setPostLinks([{posts: [], infos:[]}]);
+                            }}
+                        >{e.user_name}<span>{e.followers_id? ' • following' : ''}</span></p>
                     </div>
                 )
             })}
