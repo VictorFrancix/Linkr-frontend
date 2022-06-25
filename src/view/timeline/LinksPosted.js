@@ -73,6 +73,7 @@ export default function LinksPosted() {
         }
     }, 5000);
 
+  
     ////////////////////////         colocar alerts nos erros 
     function deletePost (postId){
         axios.delete(`${'http://localhost:4000'}/post/`, { headers: { authorized: token } })
