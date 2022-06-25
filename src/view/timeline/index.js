@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Timeline() {
   const { setEdit, setOpenComment } = useContext(AuthContext);
+  let userObject = localStorage.getItem('user')
 
   return (
     <>
@@ -23,7 +24,7 @@ export default function Timeline() {
       <DivPostsTimeline>
         <h3>Timeline</h3>
         <WritePostTimeLine>
-          <img src={image} alt="" />
+          <img src={`${JSON.parse(userObject)}`} alt="" />
           <FormPosted/>
         </WritePostTimeLine>
         <LinksPosted/>

@@ -22,7 +22,8 @@ export default function NavBar() {
     let tokenObject = localStorage.getItem("tokenUser");
     let userObject = localStorage.getItem("user")
 
-    console.log(userObject.image)
+    console.log(localStorage)
+    console.log(typeof(userObject))
       
     
     
@@ -76,7 +77,7 @@ export default function NavBar() {
               Navigate("/")
             }}>sair</p>
 
-        <img className="userImg" src={userObject} alt="" onClick={() => {
+        <img className="userImg" src={`${JSON.parse(userObject)}`} alt="user_img" onClick={() => {
             setRoute(`/post/${userId}`); 
             setPage(0); setReload(!reload); 
             setPostLinks([{posts: [], infos:[]}]);

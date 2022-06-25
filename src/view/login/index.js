@@ -38,7 +38,8 @@ export function Login() {
     const promise = axios.post(`${URL}login`, user);
     promise.then(({ data }) => {
       const newToken = data.token;
-      userObject = data.user
+      userObject = JSON.stringify(data.user.image)
+
       tokenObject = JSON.stringify(data.token);
       localStorage.setItem("tokenUser", tokenObject);
       localStorage.setItem("user", userObject); 
