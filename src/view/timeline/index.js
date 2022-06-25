@@ -17,9 +17,9 @@ export default function Timeline() {
   const { setEdit, setOpenComment } = useContext(AuthContext);
 
   return (
+    <>
+    <NavBar/>
     <DivMainTimeLine onClick={() => {setEdit(-1); setOpenComment('')} }>
-      <NavBar/>
-
       <DivPostsTimeline>
         <h3>Timeline</h3>
         <WritePostTimeLine>
@@ -30,5 +30,6 @@ export default function Timeline() {
       </DivPostsTimeline>
       <TrendingHashtags/>
     </DivMainTimeLine>
+    </>
   );
 }

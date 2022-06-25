@@ -19,11 +19,15 @@ export default function NavBar() {
     const [result, setResult] = useState([]);
     const userId = 1;
 
-    const token = 142536    
+    let tokenObject = localStorage.getItem("tokenUser");
+    let userObject = localStorage.getItem("user")
+
+    console.log(userObject.image)
+      
     
     
     function getUsers(search) {
-        axios.get(`${url}/users`, { headers: { authorized: token }, params: { search_user: search } })
+        axios.get(`${url}/users`, { headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: { search_user: search } })
             .then((response) => {
                 setResult(response.data);
                 console.log(response.data)
@@ -64,12 +68,15 @@ export default function NavBar() {
                     </div>
                 )
             })}
+            
         </div>
+
         <p onClick={() => {
               localStorage.clear();
               Navigate("/")
             }}>sair</p>
-        <img className="userImg" src={image} alt="" onClick={() => {
+
+        <img className="userImg" src={userObject} alt="" onClick={() => {
             setRoute(`/post/${userId}`); 
             setPage(0); setReload(!reload); 
             setPostLinks([{posts: [], infos:[]}]);
