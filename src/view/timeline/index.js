@@ -10,24 +10,27 @@ import LinksPosted from "./LinksPosted";
 import FormPosted from "./FormPosted";
 import NavBar from "./NavBar";
 import TrendingHashtags from "./../trendings/index.js"
+import { useNavigate } from "react-router-dom";
 
 
 export default function Timeline() {
   const { setEdit, setOpenComment } = useContext(AuthContext);
+  let userObject = localStorage.getItem('user')
 
   return (
+    <>
+    <NavBar/>
     <DivMainTimeLine onClick={() => {setEdit(-1); setOpenComment('')} }>
-      <NavBar/>
-
       <DivPostsTimeline>
         <h3>Timeline</h3>
         <WritePostTimeLine>
-          <img src={image} alt="" />
+          <img src={`${JSON.parse(userObject)}`} alt="" />
           <FormPosted/>
         </WritePostTimeLine>
         <LinksPosted/>
       </DivPostsTimeline>
       <TrendingHashtags/>
     </DivMainTimeLine>
+    </>
   );
 }

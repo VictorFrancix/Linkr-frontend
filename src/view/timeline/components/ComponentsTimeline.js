@@ -7,9 +7,7 @@ export const DivMainTimeLine = styled.div`
   background: #333333;
   font-family: "Passion One";
   display: flex;
-  flex-direction: column;
   align-items: center;
-
   flex-direction: rows;
   justify-content: center;
 
@@ -20,6 +18,7 @@ export const DivMainTimeLine = styled.div`
 `;
 
 export const DivPostsTimeline = styled.div`
+  margin-top: -10.5%;
   margin-right: -18.8%;
   width: 60vw;
   display: flex;

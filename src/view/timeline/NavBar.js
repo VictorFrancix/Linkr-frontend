@@ -9,18 +9,26 @@ import axios from "axios";
 import image from "./components/index.jpeg";
 import { DebounceInput } from 'react-debounce-input';
 import userImage from "./components/user.svg"
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function NavBar() {
+    const Navigate = useNavigate()
     const { url, setRoute, setReload, reload, setPage, setPostLinks } = useContext(AuthContext);
     const [result, setResult] = useState([]);
     const userId = 1;
 
-    const token = 142536    
+    let tokenObject = localStorage.getItem("tokenUser");
+    let userObject = localStorage.getItem("user")
+
+    console.log(localStorage)
+    console.log(typeof(userObject))
+      
     
     
     function getUsers(search) {
-        axios.get(`${url}/users`, { headers: { authorized: token }, params: { search_user: search } })
+        axios.get(`${url}/users`, { headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: { search_user: search } })
             .then((response) => {
                 setResult(response.data);
                 console.log(response.data)
@@ -61,8 +69,15 @@ export default function NavBar() {
                     </div>
                 )
             })}
+            
         </div>
-        <img className="userImg" src={image} alt="" onClick={() => {
+
+        <p onClick={() => {
+              localStorage.clear();
+              Navigate("/")
+            }}>sair</p>
+
+        <img className="userImg" src={`${JSON.parse(userObject)}`} alt="user_img" onClick={() => {
             setRoute(`/post/${userId}`); 
             setPage(0); setReload(!reload); 
             setPostLinks([{posts: [], infos:[]}]);

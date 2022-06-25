@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const NavBarTimeLine = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   position: relative;
   width: 100%;
   height: 72px;
@@ -78,4 +78,10 @@ export const NavBarTimeLine = styled.div`
     cursor: pointer;
   }
   div{border-radius: 16px;}
+
+  p {
+    margin-left: 82% !important;
+    font-size: 18px;
+  }
+
 `;

@@ -10,10 +10,11 @@ export default function FormPosted() {
     const [title, setTitle] = useState('');
     const [desable, setdesable] = useState(false);
 
-    const token = 142536
+    let tokenObject = localStorage.getItem("tokenUser");
+    
 
     function postTimeline(){
-        axios.post(`${url}/post`, {title, link}, {headers: { authorized: token }})
+        axios.post(`${url}/post`, {title, link}, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }})
         .then((response) => {
             setdesable(false);
             setLink(''); setTitle('');

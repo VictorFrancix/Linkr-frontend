@@ -44,10 +44,10 @@ export default function LinksPosted() {
 
     const [desable, setdesable] = useState([]);
 
-    const token = 142536
+    let tokenObject = localStorage.getItem("tokenUser");
 
     useEffect(() => {
-        axios.get(`${url + route}`, { headers: { authorized: token }, params: { page: page } })
+        axios.get(`${url + route}`, { headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: { page: page } })
         .then((response) => {
             setPostLinks([...postsLinks, response.data]);
             setPage(page + 1);
@@ -61,7 +61,7 @@ export default function LinksPosted() {
     const [newPosts, setNewPosts] = useState(0);
     useInterval(() => {
         if(postsLinks.length > 1){
-            axios.get(`${url}/new${route}`, {headers: {authorized: token }, params: {date: "2022-06-24 17:43:12.836617"} })
+            axios.get(`${url}/new${route}`, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: {date: "2022-06-24 17:43:12.836617"} })
             .then((response) => {
                 if(response.data.length === 2){
                     setNewPosts(response.data[0].count + response.data[1].count);
@@ -76,7 +76,7 @@ export default function LinksPosted() {
   
     ////////////////////////         colocar alerts nos erros 
     function deletePost (postId){
-        axios.delete(`${'http://localhost:4000'}/post/`, { headers: { authorized: token } })
+        axios.delete(`${' https://linkr-project17.herokuapp.com'}/post/`, { headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` } })
         .then((response) => {
             console.log(response)
             setReload(!reload);
@@ -88,7 +88,7 @@ export default function LinksPosted() {
         })
     }
     function editPost (postId){
-        axios.put(`${'http://localhost:4000'}/post/${postId}`, { title : titulo }, { headers: { authorized: token } })
+        axios.put(`${' https://linkr-project17.herokuapp.com'}/post/${postId}`, { title : titulo }, { headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` } })
         .then((response) => {
             console.log(response)
             setReload(!reload); setEdit(-1);
@@ -100,7 +100,7 @@ export default function LinksPosted() {
         })
     } 
     function postLike (postId){
-        axios.post(`${url}/like`, {}, {headers: { authorized: token }, params: {post_id: postId}})
+        axios.post(`${' https://linkr-project17.herokuapp.com'}/like`, {}, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: {post_id: postId}})
         .then((response) => {
             setReload(!reload);
             setdesable(desable.filter(e => e !== postId+'E'));
@@ -111,7 +111,7 @@ export default function LinksPosted() {
         })
     }
     function getLike (postId){
-        axios.get(`${url}/like`, {headers: { authorized: token }, params: {post_id: postId}})
+        axios.get(`${url}/like`, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: {post_id: postId}})
         .then((response) => {
             setLikes([response.data, postId]);
         })
@@ -120,7 +120,7 @@ export default function LinksPosted() {
         })
     }
     function postComment (post_id){
-        axios.post(`${url}/comment`, {post_id, text: comment}, {headers: { authorized: token }})
+        axios.post(`${url}/comment`, {post_id, text: comment}, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }})
         .then((response) => {
             setComment('');
             setReload(!reload);
@@ -132,7 +132,7 @@ export default function LinksPosted() {
         })
     }
     function getComment (post_id) {
-        axios.get(`${url}/comment`, {headers: { authorized: token }, params: {post_id, page: 0}})
+        axios.get(`${url}/comment`, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: {post_id, page: 0}})
         .then((response) => {
             setPostsComment(response.data);
             setOpenComment(post_id);
@@ -145,7 +145,7 @@ export default function LinksPosted() {
         })
     }
     function postRepost (post_id){
-        axios.post(`${url}/repost`, {}, {headers: { authorized: token }, params: {post_id}})
+        axios.post(`${url}/repost`, {}, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: {post_id}})
         .then((response) => {
             setReload(!reload);
             setdesable(desable.filter(e => e !== post_id+'R'));
@@ -156,7 +156,7 @@ export default function LinksPosted() {
         })
     }
     function deleteRepost (repost_id){
-        axios.delete(`${url}/repost`, {}, {headers: { authorized: token }, params: {repost_id}})
+        axios.delete(`${url}/repost`, {}, {headers: { Authorization: `Bearer ${JSON.parse(tokenObject)}` }, params: {repost_id}})
         .then((response) => {
             setReload(!reload);
             setdesable(desable.filter(e => e !== repost_id+'T'));

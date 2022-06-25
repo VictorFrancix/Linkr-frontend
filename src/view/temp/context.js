@@ -3,7 +3,7 @@ import React,  { createContext, useState } from 'react';
 export const AuthContext = createContext({});
 
 export const AuthProvider = (props) => {
-    const url = 'http://localhost:4000'
+    const url = ' https://linkr-project17.herokuapp.com'
     const [ edit, setEdit ] = useState(-1);
     const [ openComment, setOpenComment ] = useState('')
     const [route, setRoute] = useState('/post')
