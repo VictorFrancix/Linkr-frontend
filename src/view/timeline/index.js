@@ -9,6 +9,7 @@ import image from "./components/index.jpeg";
 import LinksPosted from "./LinksPosted";
 import FormPosted from "./FormPosted";
 import NavBar from "./NavBar";
+import TrendingHashtags from "./../trendings/index.js"
 
 
 export default function Timeline() {
@@ -17,6 +18,7 @@ export default function Timeline() {
   return (
     <DivMainTimeLine onClick={() => {setEdit(-1); setOpenComment('')} }>
       <NavBar/>
+
       <DivPostsTimeline>
         <h3>Timeline</h3>
         <WritePostTimeLine>
@@ -25,6 +27,7 @@ export default function Timeline() {
         </WritePostTimeLine>
         <LinksPosted/>
       </DivPostsTimeline>
+      <TrendingHashtags/>
     </DivMainTimeLine>
   );
 }
