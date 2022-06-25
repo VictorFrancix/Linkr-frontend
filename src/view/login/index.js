@@ -18,7 +18,7 @@ export function Login() {
 
   const navigate = useNavigate();
 
-  const URL = "http://localhost:4000/";
+  const URL = "https://linkr-project17.herokuapp.com/";
 
   useEffect(() => {
     if (tokenObject && userObject) {
@@ -39,6 +39,7 @@ export function Login() {
     promise.then(({ data }) => {
       const newToken = data.token;
       userObject = JSON.stringify(data.user)
+      userObject = JSON.parse(userObject)
       tokenObject = JSON.stringify(data.token);
       localStorage.setItem("tokenUser", tokenObject);
       localStorage.setItem("user", userObject); 

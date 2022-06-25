@@ -11,12 +11,15 @@ import LinksPosted from "./LinksPosted";
 import { TbSearch } from "react-icons/tb";
 import FormPosted from "./FormPosted";
 import TrendingHashtags from "./../trendings/index.js"
+import { useNavigate } from "react-router-dom";
 
 
 export default function Timeline() {
   const {  setEdit, setOpenComment, setRoute, setReload, reload } = useContext(AuthContext);
   const [search, setSearch] = useState();
   const userId = 1;
+  let userObject = localStorage.getItem("user");
+  const Navigate = useNavigate();
 
   return (
     <>
@@ -29,13 +32,17 @@ export default function Timeline() {
             />
             <TbSearch className="search"/>
         </div>
-        <img className="userImg" src={image} alt="" onClick={() => {setRoute(`/post/${userId}`); setReload(!reload)}} />
+        <p onClick={() => {
+              localStorage.clear();
+              Navigate("/")
+            }}>sair</p>
+        <img className="userImg" src={userObject.image} alt="" onClick={() => {setRoute(`/post/${userId}`); setReload(!reload)}} />
     </NavBarTimeLine>
     <DivMainTimeLine onClick={() => {setEdit(-1); setOpenComment('')} }>
       <DivPostsTimeline>
         <h3>Timeline</h3>
         <WritePostTimeLine>
-          <img src={image} alt="" />
+          <img src={userObject.image} alt="" />
           <FormPosted/>
         </WritePostTimeLine>
         <LinksPosted/>

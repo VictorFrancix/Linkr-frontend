@@ -29,7 +29,6 @@ export const NavBarTimeLine = styled.div`
   color: #ffffff;
   font-weight: 700;
   font-size: 32px;
-
   span {
     margin-left: 2vh;
     cursor: pointer;
@@ -40,7 +39,6 @@ export const NavBarTimeLine = styled.div`
     height: 100%;
   }
   .divSearch {
-    background-color: red;
     position: absolute;
     width: 563px;
     height: 45px;
@@ -60,6 +58,10 @@ export const NavBarTimeLine = styled.div`
     height: 53px;
     border-radius: 1.625em;
     cursor: pointer;
+  }
+  p {
+    font-size: 18px;
+    margin-left:83%;
   }
 `;
 

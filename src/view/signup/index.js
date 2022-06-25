@@ -10,14 +10,14 @@ export function SignUp() {
   const [user, setUser] = useState({
     email: "",
     password: "",
-    username: "",
-    urlpicture: "",
+    user_name: "",
+    image: "",
   });
   const { loading, setLoading } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  const URL = "https://linkr-projeto17.herokuapp.com/";
+  const URL = " https://linkr-project17.herokuapp.com/";
 
   function updateUser(event) {
     const { name, value } = event.target;
@@ -64,20 +64,20 @@ export function SignUp() {
           required
         />
         <input
-          name="username"
+          name="user_name"
           type="text"
           disabled={loading}
           placeholder="username"
-          value={user.username}
+          value={user.user_name}
           onChange={updateUser}
           required
         />
         <input
-          name="picture"
+          name="image"
           type="url"
           disabled={loading}
           placeholder="picture url"
-          value={user.urlpicture}
+          value={user.image}
           onChange={updateUser}
           required
         />
