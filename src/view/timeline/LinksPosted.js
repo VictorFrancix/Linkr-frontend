@@ -1,5 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./../temp/context";
+import  InfiniteScroll  from  "react-infinite-scroller"; 
+import useInterval from "use-interval";
+import axios from "axios";
 
 import { BiHeart } from "react-icons/bi";
 import { FcLike } from "react-icons/fc";
@@ -10,7 +13,6 @@ import { AiOutlineComment } from "react-icons/ai";
 import { CgZeit } from "react-icons/cg";
 import { TbSend } from "react-icons/tb"
 
-
 import {
     ContentPosted,
     Posteds,
@@ -18,24 +20,25 @@ import {
     Input,
     Likes,
     Urlmetadata,
-    Comment
+    Comment,
+    NewPosteds
 } from "./components/styledLinkPosted";
-
 import userImage from "./components/user.svg"
 
-import axios from "axios";
 
 export default function LinksPosted() {
-    const { url, edit, setEdit, openComment, setOpenComment, route, setRoute, reload, setReload } = useContext(AuthContext);
+    const { url, edit, setEdit, openComment, 
+        setOpenComment, route, setRoute, reload, 
+        setReload, page, setPage, 
+        postsLinks, setPostLinks 
+    } = useContext(AuthContext);
 
-    const [postsLinks, setPostLinks] = useState({posts: [], infos:[]});
     const [postsComment, setPostsComment] =useState([]);
     const [likes, setLikes] = useState([{likeUser: [], numLikes: 0}]);
-    const [page, setPage] = useState([]);
     const [comment, setComment] = useState('');
 
+    const [test, setTest] = useState(true)
 
-    const [ test, setTest ] = useState('white');
     const userId = 1;
     const [titulo, setTitulo] = useState('');
 
@@ -45,14 +48,33 @@ export default function LinksPosted() {
     let userObject = localStorage.getItem("user");
 
     useEffect(() => {
-        axios.get(`${url + route}`, { headers: { authorized: tokenObject }, params: { page: 0 } })
+        axios.get(`${url + route}`, { headers: { authorized: tokenObject }, params: { page: page } })
         .then((response) => {
-            setPostLinks(response.data);
-            //setLike(response.data.map((e, i) => e.like === true ? i : ''));
+            setPostLinks([...postsLinks, response.data]);
+            setPage(page + 1);
+            if(response.data.posts.length > 0){
+                setTest(true)
+            }
         })
         .catch((err) => {console.log(err)})    
     },[reload])
 
+    const [newPosts, setNewPosts] = useState(0);
+    useInterval(() => {
+        if(postsLinks.length > 1){
+            axios.get(`${url}/new${route}`, {headers: {authorized: token }, params: {date: "2022-06-24 17:43:12.836617"} })
+            .then((response) => {
+                if(response.data.length === 2){
+                    setNewPosts(response.data[0].count + response.data[1].count);
+                } else if(response.data.length === 1){
+                    setNewPosts(response.data[0].count);
+                }
+            })
+            .catch((err) => {console.log(err)}) 
+        }
+    }, 5000);
+
+  
     ////////////////////////         colocar alerts nos erros 
     function deletePost (postId){
         axios.delete(`${' https://linkr-project17.herokuapp.com'}/post/`, { headers: { authorized: tokenObject } })
@@ -98,7 +120,6 @@ export default function LinksPosted() {
             console.log(err)
         })
     }
-
     function postComment (post_id){
         axios.post(`${url}/comment`, {post_id, text: comment}, {headers: { authorized: tokenObject }})
         .then((response) => {
@@ -124,7 +145,6 @@ export default function LinksPosted() {
             setdesable(desable.filter(e => e !== post_id+'C'));
         })
     }
-
     function postRepost (post_id){
         axios.post(`${url}/repost`, {}, {headers: { authorized: tokenObject }, params: {post_id}})
         .then((response) => {
@@ -156,37 +176,50 @@ export default function LinksPosted() {
             : parseInt(numTotal / 1000000) + ' MI'
         );
     }
-
+    
     if ( postsLinks.length ===  0 ){
         return <></>
     } else {
-        return (
-            postsLinks.posts.map((e, i) => {
-                const info = postsLinks.infos[i]
+        return (<>
+            <NewPosteds new={newPosts > 0}>{newPosts} new posts, load more!</NewPosteds>
+
+            <InfiniteScroll
+            loadMore={() => {setPage(page); setReload(!reload); console.log(page); setTest(false)}}
+            hasMore={test}
+            initialLoad={false}
+            //loader={<Loading key={0}></Loading>}
+        >{
+            postsLinks.map(posted => {
+                return (posted.posts.map((e, i) => {
+                const info = posted.infos[i]
                 const youLike = likes[0].likeUser.find(li => li.user != null) 
                 const followLike = likes[0].likeUser.filter(li => li.userFollower != null).map(li => li.userFollower);             
                
                 return (
                     <ContentPosted 
                         repost={e.creat_user === e.post_user ? '276px' : '309px'} 
-                        openComment={ openComment === e.id? true : false }
+                        openComment={ openComment === e.id }
                         key={i} 
                     >
                         <CgRepeat className="reposted_icon"/><p className="reposted_name">Re-posted by <span>{e.post_user === userId ? 'you' : e.creat_userName}</span></p>
                         <Posteds>
-                            <img className="userImg" src={e.user_image? e.user_image : userImage} alt="" onClick={() => {setRoute(`/post/${e.post_user}`); setReload(!reload)}} />
+                            <img className="userImg" src={e.user_image? e.user_image : userImage} alt="" />
                             <Likes>                    
                                 { e.like != null ? 
                                     <FcLike className="heart-icon" 
-                                        onClick={ () => {if ( e.post_user === e.creat_user) 
-                                            {setdesable([...desable, e.id+'L']); postLike(e.id)}} 
+                                        onClick={ () => {if ( e.post_user === e.creat_user){
+                                            setdesable([...desable, e.id+'L']); 
+                                            postLike(e.id);
+                                        }} 
                                         } 
                                         onMouseEnter={() => {getLike(e.id)}}
                                         onMouseLeave={() => {setLikes([{likeUser: [], numLikes: 0}])}}
                                     /> : 
                                     <BiHeart className="heart-icon" 
-                                        onClick={ () => {if ( e.post_user === e.creat_user) 
-                                            {setdesable([...desable, e.id+'L']); postLike(e.id)}} 
+                                        onClick={ () => {if ( e.post_user === e.creat_user){
+                                            setdesable([...desable, e.id+'L']); 
+                                            postLike(e.id);
+                                        }} 
                                         }
                                         onMouseEnter={() => {getLike(e.id)}}
                                         onMouseLeave={() => {setLikes([{likeUser: [], numLikes: 0}])}} 
@@ -215,7 +248,7 @@ export default function LinksPosted() {
                                 <p className="aux-icon p1" style={{top: '74px'}}>{calcMi(info.numComments)} Comments</p>
 
                                 <CgRepeat className={ desable.includes(e.id+'R') ? "aux-icon desable" : "aux-icon" }
-                                    style={{top: '100px', color: test}} 
+                                    style={{top: '100px'}} 
                                     onClick={() => {
                                         if (!desable.includes(e.id+'R') && e.post_user === e.creat_user) {
                                             postRepost(e.id)
@@ -226,7 +259,14 @@ export default function LinksPosted() {
 
                             </Likes>
                             <ContentLinkPosted>
-                                <p className="name">{e.post_userName}</p>                   
+                                <p className="name" 
+                                    onClick={() => {
+                                        setRoute(`/post/${e.post_user}`); 
+                                        setPostLinks([{posts: [], infos:[]}]);
+                                        setPage(0); 
+                                        setReload(!reload)
+                                        }} 
+                                    >{e.post_userName}</p>                   
                                 {e.post_user === userId ? 
                                     <>
                                         <FaTrash className={desable.includes(e.id+'T') ? "icons desable" : "icons" } 
@@ -280,14 +320,20 @@ export default function LinksPosted() {
                             </ContentLinkPosted>
                         </Posteds>
                         <Comment 
-                            open={ openComment === e.id? true : false }
+                            open={ openComment === e.id }
                             onClick={(event) => event.stopPropagation()}
                         >
                             {openComment === e.id? postsComment.map(post => {
                                     return (
                                         <div key={post.id}>
                                             <img className="comment-img" src={post.image? post.image : userImage} alt=""></img>
-                                            <p className="comment-name">{post.user_name}<span>{post.followers_id? ' • following' : ''}</span></p>
+                                            <p className="comment-name" 
+                                                onClick={() => {
+                                                    setRoute(`/post/${post.user_id}`); 
+                                                    setPostLinks([{posts: [], infos:[]}]);
+                                                    setPage(0); setReload(!reload);
+                                                }}
+                                            >{post.user_name}<span>{post.followers_id? ' • following' : ''}</span></p>
                                             <p className="comment-text">{post.text}</p>
                                         </div>
                                     )
@@ -307,11 +353,12 @@ export default function LinksPosted() {
                                     }
                                 }}
                             />
-                        </Comment>
+                        </Comment>             
                     </ContentPosted>
                 )
             })
-        )
+            )})
+        }</InfiniteScroll>
+        </>)
     }
 }
-

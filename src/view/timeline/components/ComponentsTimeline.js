@@ -7,6 +7,9 @@ export const DivMainTimeLine = styled.div`
   background: #333333;
   font-family: "Passion One";
   display: flex;
+  flex-direction: column;
+  align-items: center;
+
   flex-direction: rows;
   justify-content: center;
 
@@ -71,9 +74,7 @@ export const DivPostsTimeline = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-
   padding: 4.875em 0 0 0;
-
   h3 {
     color: #ffffff;
     font-family: "Oswald";
@@ -86,16 +87,12 @@ export const DivPostsTimeline = styled.div`
 
 export const WritePostTimeLine = styled.div`
   display: flex;
-
   margin-bottom: 29px;
   width: 38.1875em;
   height: 13.0625em;
-
   border-radius: 1em;
   padding: 1.375em;
-
   background: #ffff;
-
   img {
     width: 3.125em;
     height: 3.125em;
@@ -106,17 +103,13 @@ export const WritePostTimeLine = styled.div`
 export const Posteds = styled.div`
     
     position: relative;
-
     margin-bottom: 16px;
     width: 611px;
     height: 276px;
     box-sizing: border-box;
-
     border-radius: 1em;
     padding: 1.375em;
-
     background: #171717;
-
     .userImg {
         position: absolute;
         top: 17px;
@@ -248,9 +241,7 @@ export const Urlmetadata = styled.div`
     top: 101px;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
-
     cursor: pointer;
-
     h2 {
         margin: 24px 0 0 20px;
         width: 310px;
