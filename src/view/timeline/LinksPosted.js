@@ -62,7 +62,7 @@ export default function LinksPosted() {
     const [newPosts, setNewPosts] = useState(0);
     useInterval(() => {
         if(postsLinks.length > 1){
-            axios.get(`${url}/new${route}`, {headers: {authorized: token }, params: {date: "2022-06-24 17:43:12.836617"} })
+            axios.get(`${url}/new${route}`, {headers: {authorized: tokenObject }, params: {date: "2022-06-24 17:43:12.836617"} })
             .then((response) => {
                 if(response.data.length === 2){
                     setNewPosts(response.data[0].count + response.data[1].count);

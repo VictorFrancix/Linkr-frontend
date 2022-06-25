@@ -23,7 +23,7 @@ export default function Timeline() {
       <DivPostsTimeline>
         <h3>Timeline</h3>
         <WritePostTimeLine>
-          <img src={userObject.image} alt="" />
+          <img src={image} alt="" />
           <FormPosted/>
         </WritePostTimeLine>
         <LinksPosted/>
